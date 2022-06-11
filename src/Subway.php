@@ -7,41 +7,27 @@ class Subway
 {
     public function calculate(string $input): int
     {
-        $totalPoint = $this->getTotalPoint($input);
+        $targetRoute = $this->getTargetRoute($input);
+        preg_match_all('/\d/', $targetRoute, $pointLists);
+        $totalPoint = $this->calculateTotalPoint($pointLists[0]);
 
-        return $this->resolvePriceByDistancePoint($totalPoint);
+        return $this->resolvePriceByPoint($totalPoint);
     }
 
-    private function getTotalPoint(string $input): int
-    {
-        $pointList = $this->getRoutePointList($input);
-
-        return $this->calculateTotalPoint($pointList);
-    }
-
-    private function getRoutePointList($input): array
+    private function getTargetRoute(string $input): string
     {
         //$input = ルート(駅,距離ポイント....)|出発駅|到着駅
         $inputs = explode('|', $input);
         [$route, $startStation, $endStation] = [$inputs[0], $inputs[1], $inputs[2]];
 
-        //出発駅と到着駅どっちが先か確認する
         $startStationIndex = strpos($route, $startStation);
         $endStationIndex = strpos($route, $endStation);
         if ($startStationIndex < $endStationIndex) {
-            $targetRoutes = strstr($route, $startStation);
-            $targetRoutes = strstr($targetRoutes, $endStation, true);
-            preg_match_all('/\d/', $targetRoutes, $pointList);
-
-            return $pointList[0];
+            return strstr(strstr($route, $startStation), $endStation, true);
         }
 
         //逆行の場合
-        $targetRoutes = strstr($route, $endStation);
-        $targetRoutes = strstr($targetRoutes, $startStation, true);
-        preg_match_all('/\d/', $targetRoutes, $pointList);
-
-        return $pointList[0];
+        return strstr(strstr($route, $endStation), $startStation, true);
     }
 
     private function calculateTotalPoint($pointList): int
@@ -55,7 +41,7 @@ class Subway
     }
 
     //料金表
-    private function resolvePriceByDistancePoint(int $distancePoint): int
+    private function resolvePriceByPoint(int $distancePoint): int
     {
         return match ($distancePoint) {
             1 => 210,
