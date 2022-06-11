@@ -7,12 +7,12 @@ class Subway
 {
     public function calculate(string $input): int
     {
-        $allPoint = $this->getPoints($input);
+        $totalPoint = $this->getTotalPoint($input);
 
-        return $this->resolvePriceByDistancePoint($allPoint);
+        return $this->resolvePriceByDistancePoint($totalPoint);
     }
 
-    private function getPoints(string $input): int
+    private function getTotalPoint(string $input): int
     {
         $pointList = $this->getRoutePointList($input);
 
@@ -28,7 +28,6 @@ class Subway
         //出発駅と到着駅どっちが先か確認する
         $startStationIndex = strpos($route, $startStation);
         $endStationIndex = strpos($route, $endStation);
-
         if ($startStationIndex < $endStationIndex) {
             $targetRoutes = strstr($route, $startStation);
             $targetRoutes = strstr($targetRoutes, $endStation, true);
