@@ -1,12 +1,12 @@
 {
-    "name": "shigaayano/subway",
+    "name": "kin29/subway",
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
-            "Shigaayano\\Subway\\": "src/",
-            "Shigaayano\\Subway\\Tests\\": "tests/"
+            "Kin29\\Subway\\": "src/",
+            "Kin29\\Subway\\Tests\\": "tests/"
         }
     },
     "authors": [

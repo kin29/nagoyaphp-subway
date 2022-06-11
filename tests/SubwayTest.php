@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Shigaayano\Subway\Tests;
+namespace Kin29\Subway\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Shigaayano\Subway\Subway;
+use Kin29\Subway\Subway;
 
 class SubwayTest extends TestCase
 {

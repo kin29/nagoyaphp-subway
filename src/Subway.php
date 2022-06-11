@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Shigaayano\Subway;
+namespace Kin29\Subway;
 
 class Subway
 {
