@@ -5,7 +5,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Shigaayano\\Subway\\": "src/"
+            "Shigaayano\\Subway\\": "src/",
+            "Shigaayano\\Subway\\Tests\\": "tests/"
         }
     },
     "authors": [
