@@ -5,8 +5,8 @@ namespace Shigaayano\Subway;
 
 class Subway
 {
-    public function getHoge(): string
+    public function calculate(): int
     {
-        return 'hoge';
+        return 0;
     }
 }
