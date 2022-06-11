@@ -7,45 +7,52 @@ class Subway
 {
     public function calculate(string $input): int
     {
-        //$input = ルート(駅,距離ポイント....)|出発駅|到着駅
-        $route = $this->getTargetRoute($input);
-
-        preg_match_all('/\d+/', $route, $points);
-        $allPoint = 0;
-        foreach ($points[0] as $point) {
-            $allPoint += (int)$point;
-        }
+        $allPoint = $this->getPoints($input);
 
         return $this->resolvePriceByDistancePoint($allPoint);
     }
 
-    //出発駅 ~ 到着駅までのルートを取得する
-    private function getTargetRoute(string $input): string
+    private function getPoints(string $input): int
     {
-        //$input = ルート(駅,距離ポイント....)|出発駅|到着駅
-        $inputs = explode('|', $input);
-        $allRoute = $inputs[0]; //ルート(駅,距離ポイント....)
+        $pointList = $this->getRoutePointList($input);
 
-        //todo　逆行でもできるようにする
-        return strstr($allRoute, $this->getEndStation($input), true);
+        return $this->calculateTotalPoint($pointList);
     }
 
-    //出発駅を取得する
-    private function getStartStation(string $input): string
+    private function getRoutePointList($input): array
     {
         //$input = ルート(駅,距離ポイント....)|出発駅|到着駅
         $inputs = explode('|', $input);
+        [$route, $startStation, $endStation] = [$inputs[0], $inputs[1], $inputs[2]];
 
-        return $inputs[1];
+        //出発駅と到着駅どっちが先か確認する
+        $startStationIndex = strpos($route, $startStation);
+        $endStationIndex = strpos($route, $endStation);
+
+        if ($startStationIndex < $endStationIndex) {
+            $targetRoutes = strstr($route, $startStation);
+            $targetRoutes = strstr($targetRoutes, $endStation, true);
+            preg_match_all('/\d/', $targetRoutes, $pointList);
+
+            return $pointList[0];
+        }
+
+        //逆行の場合
+        $targetRoutes = strstr($route, $endStation);
+        $targetRoutes = strstr($targetRoutes, $startStation, true);
+        preg_match_all('/\d/', $targetRoutes, $pointList);
+
+        return $pointList[0];
     }
 
-    //到着駅を取得する
-    private function getEndStation(string $input): string
+    private function calculateTotalPoint($pointList): int
     {
-        //$input = ルート(駅,距離ポイント....)|出発駅|到着駅
-        $inputs = explode('|', $input);
+        $totalPoint = 0;
+        foreach ($pointList as $point) {
+            $totalPoint += (int)$point;
+        }
 
-        return $inputs[2];
+        return $totalPoint;
     }
 
     //料金表
